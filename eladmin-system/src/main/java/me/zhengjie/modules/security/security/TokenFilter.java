@@ -34,6 +34,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Objects;
 
 /**
@@ -65,6 +66,12 @@ public class TokenFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        Enumeration<String> headerNames=httpServletRequest.getHeaderNames();
+        for(Enumeration<String> e=headerNames;e.hasMoreElements();){
+            String thisName=e.nextElement().toString();
+            String thisValue=httpServletRequest.getHeader(thisName);
+            System.out.println("header的key:"+thisName+"--------------header的value:"+thisValue);
+        }
         String token = resolveToken(httpServletRequest);
         // 对于 Token 为空的不需要去查 Redis
         if (StrUtil.isNotBlank(token)) {
@@ -98,6 +105,7 @@ public class TokenFilter extends GenericFilterBean {
      */
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(properties.getHeader());
+        System.out.println(bearerToken);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(properties.getTokenStartWith())) {
             // 去掉令牌前缀
             return bearerToken.replace(properties.getTokenStartWith(), "");

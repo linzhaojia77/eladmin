@@ -90,7 +90,7 @@ public class AuthorizationController {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // 生成令牌与第三方系统获取令牌方式
-        // UserDetails userDetails = userDetailsService.loadUserByUsername(userInfo.getUsername());
+         //UserDetails userDetails = userDetailsService.loadUserByUsername(userInfo.getUsername());
         // Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         // SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = tokenProvider.createToken(authentication);
